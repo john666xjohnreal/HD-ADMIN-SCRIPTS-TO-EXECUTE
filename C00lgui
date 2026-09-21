@@ -1,0 +1,504 @@
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
+local Workspace = game:GetService("Workspace")
+local player = Players.LocalPlayer
+
+local playerGui = player:WaitForChild("PlayerGui")
+local existing = playerGui:FindFirstChild("c00lgui")
+if existing then
+	existing:Destroy()
+end
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "c00lgui"
+screenGui.ResetOnSpawn = true
+screenGui.Parent = playerGui
+
+local frame = Instance.new("Frame")
+frame.Name = "TheGUI"
+frame.Size = UDim2.new(0, 1116, 0, 450)
+frame.Position = UDim2.new(0.06, 0, 0.109, 0)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BorderColor3 = Color3.new(1, 0, 0)
+frame.BorderSizePixel = 12
+frame.Active = true
+frame.Parent = screenGui
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(0, 1110, 0, 50)
+title.Position = UDim2.new(0.002, 0, 0.015, 0)
+title.BackgroundColor3 = Color3.new(0, 0, 0)
+title.TextColor3 = Color3.new(1, 1, 1)
+title.Text = "C00lgui"
+title.TextScaled = true
+title.Parent = frame
+
+local credit = Instance.new("TextLabel")
+credit.Size = UDim2.new(0, 1116, 0, 31)
+credit.Position = UDim2.new(0, 0, 0.927, 0)
+credit.BackgroundColor3 = Color3.new(0, 0, 0)
+credit.TextColor3 = Color3.new(1, 1, 1)
+credit.Text = "Original by 007n7"
+credit.TextScaled = true
+credit.Parent = frame
+
+local function makeButton(text, posX, posY, sizeX)
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(0, sizeX or 200, 0, 50)
+	btn.Position = UDim2.new(posX, 0, posY, 0)
+	btn.BackgroundColor3 = Color3.new(0, 0, 0)
+	btn.TextColor3 = Color3.new(1, 1, 1)
+	btn.Text = text
+	btn.TextScaled = true
+	btn.Parent = frame
+	return btn
+end
+
+local function makeButtonOffset(text, offX, offY, sizeX)
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(0, sizeX or 200, 0, 50)
+	btn.Position = UDim2.new(0, offX, 0, offY)
+	btn.BackgroundColor3 = Color3.new(0, 0, 0)
+	btn.TextColor3 = Color3.new(1, 1, 1)
+	btn.Text = text
+	btn.TextScaled = true
+	btn.Parent = frame
+	return btn
+end
+
+local buttons = {}
+
+buttons.Spamdecal = makeButton("Spamdecal", 0, 0.170)
+buttons.Skybox = makeButton("Skybox", 0.346, 0.170)
+buttons.Music = makeButton("Music", 0.692, 0.170)
+buttons.ColorRandom = makeButton("color random", 0, 0.358)
+buttons["666"] = makeButton("666", 0.346, 0.358)
+buttons.Disco = makeButton("Disco", 0.692, 0.358)
+buttons.Unanchar = makeButton("Unanchar", 0, 0.550)
+buttons.Particle = makeButton("Particle", 0.346, 0.550)
+buttons.Jumpscare = makeButton("jumpscare", 0.692, 0.550)
+buttons.Hint = makeButton("Hint", 0, 0.743)
+buttons.Shutdown = makeButton("Shutdown", 0.346, 0.743)
+buttons.ClearWorkspace = makeButton("Clear Workspace", 0.692, 0.743)
+buttons.SpamK00pkidd = makeButton("Spam K00pkidd", 0.173, 0.170)
+buttons.K00pkiddMusic = makeButton("K00pkidd music", 0.189, 0.356, 153)
+buttons.Speed = makeButton("Speed", 0.189, 0.547, 160)
+buttons.MoonGravity = makeButton("Moon Gravity", 0.189, 0.743, 159)
+buttons.K00pkiddSkybox = makeButton("K00pkidd skybox", 0.525, 0.170, 182)
+buttons.R6 = makeButton("R6", 0.960, 0.016, 38)
+
+local flyBtn = makeButtonOffset("fly", 0, 0, 52)
+flyBtn.Name = "Fly"
+local flyStroke = Instance.new("UIStroke")
+flyStroke.Parent = flyBtn
+
+local dragToggle = nil
+local dragSpeed = 0.25
+local dragStart = nil
+local startPos = nil
+
+local function updateInput(input)
+	local delta = input.Position - dragStart
+	local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	TweenService:Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+end
+
+frame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragToggle = true
+		dragStart = input.Position
+		startPos = frame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragToggle = false
+			end
+		end)
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		if dragToggle then
+			updateInput(input)
+		end
+	end
+end)
+
+buttons.Spamdecal.MouseButton1Click:Connect(function()
+	local decalID = 1365169976
+	local function exPro(root)
+		for _, v in pairs(root:GetChildren()) do
+			if v:IsA("Decal") and v.Texture ~= "http://www.roblox.com/asset/?id=" .. decalID then
+				v.Parent = nil
+			elseif v:IsA("BasePart") then
+				v.Material = Enum.Material.Plastic
+				v.Transparency = 0
+				local faces = {"Front", "Back", "Right", "Left", "Top", "Bottom"}
+				for _, face in ipairs(faces) do
+					local d = Instance.new("Decal")
+					d.Texture = "http://www.roblox.com/asset/?id=" .. decalID
+					d.Face = Enum.Normal[face]
+					d.Parent = v
+				end
+			end
+			exPro(v)
+		end
+	end
+	exPro(Workspace)
+end)
+
+buttons.Skybox.MouseButton1Click:Connect(function()
+	local s = Instance.new("Sky")
+	s.Name = "c00lkidd"
+	s.SkyboxBk = "http://www.roblox.com/asset/?id=1365169976"
+	s.SkyboxDn = "http://www.roblox.com/asset/?id=1365169976"
+	s.SkyboxFt = "http://www.roblox.com/asset/?id=1365169976"
+	s.SkyboxLf = "http://www.roblox.com/asset/?id=1365169976"
+	s.SkyboxRt = "http://www.roblox.com/asset/?id=1365169976"
+	s.SkyboxUp = "http://www.roblox.com/asset/?id=1365169976"
+	s.Parent = Lighting
+end)
+
+buttons.Music.MouseButton1Click:Connect(function()
+	local s = Instance.new("Sound")
+	s.Parent = Workspace
+	s.SoundId = "rbxassetid://160442087"
+	s.Playing = true
+	s.Looped = true
+	s.Pitch = 1
+	s.Volume = 1
+	s:Play()
+end)
+
+buttons["666"].MouseButton1Click:Connect(function()
+	for _, v in pairs(Workspace:GetChildren()) do
+		if v:IsA("BasePart") then
+			local bbg = Instance.new("BillboardGui")
+			bbg.Name = "stuf"
+			bbg.Adornee = v
+			bbg.Size = UDim2.new(2.5, 0, 2.5, 0)
+			bbg.Parent = v
+			local tlb = Instance.new("TextLabel")
+			tlb.Text = "join Team C00lkidd Today!"
+			tlb.Font = Enum.Font.SourceSansBold
+			tlb.TextScaled = true
+			tlb.TextColor3 = Color3.new(1, 0, 0)
+			tlb.Size = UDim2.new(1.25, 0, 1.25, 0)
+			tlb.Position = UDim2.new(-0.125, -22, -1.1, 0)
+			tlb.BackgroundTransparency = 1
+			tlb.Parent = bbg
+		end
+	end
+	local s = Instance.new("Sound")
+	s.Parent = Workspace
+	s.SoundId = "rbxassetid://214530855"
+	s.Pitch = 1
+	s.Volume = 1
+	s.Looped = true
+	s:Play()
+	local function xds(dd)
+		for _, v in pairs(dd:GetChildren()) do
+			if v:IsA("BasePart") then
+				v.BrickColor = BrickColor.new("Really black")
+				v.TopSurface = Enum.SurfaceType.Smooth
+				v.BottomSurface = Enum.SurfaceType.Smooth
+				local sb = Instance.new("SelectionBox")
+				sb.Adornee = v
+				sb.Color = BrickColor.new("Really red")
+				sb.Parent = v
+				local pl = Instance.new("PointLight")
+				pl.Color = Color3.new(1, 0, 0)
+				pl.Range = 15
+				pl.Brightness = 5
+				pl.Parent = v
+				local f = Instance.new("Fire")
+				f.Size = 19
+				f.Heat = 22
+				f.Parent = v
+			end
+			Lighting.TimeOfDay = "10:00"
+			Lighting.Brightness = 10
+			Lighting.Ambient = Color3.new(1, 0, 0)
+			Lighting.FogEnd = 100
+			Lighting.FogColor = Color3.new(0, 0, 0)
+			if #v:GetChildren() > 0 then
+				xds(v)
+			end
+		end
+	end
+	xds(Workspace)
+end)
+
+buttons.ColorRandom.MouseButton1Click:Connect(function()
+	for _, v in pairs(Workspace:GetDescendants()) do
+		if v:IsA("BasePart") then
+			v.BrickColor = BrickColor.Random()
+		end
+	end
+end)
+
+buttons.Disco.MouseButton1Click:Connect(function()
+	local cc = Instance.new("ColorCorrectionEffect")
+	cc.Parent = Lighting
+	local function zigzag(X)
+		return math.acos(math.cos(X * math.pi)) / math.pi
+	end
+	local counter = 0
+	Lighting.TimeOfDay = "12:00"
+	task.spawn(function()
+		while task.wait(0.1) do
+			cc.TintColor = Color3.fromHSV(zigzag(counter), 1, 1)
+			Lighting.Ambient = Color3.fromHSV(zigzag(counter), 1, 1)
+			counter += 0.01
+		end
+	end)
+end)
+
+buttons.Unanchar.MouseButton1Click:Connect(function()
+	for _, v in pairs(Workspace:GetDescendants()) do
+		if v:IsA("BasePart") then
+			v.Anchored = false
+		end
+	end
+	for _, v in pairs(game:GetService("ReplicatedStorage"):GetDescendants()) do
+		if v:IsA("BasePart") then
+			v.Anchored = false
+		end
+	end
+	for _, v in pairs(game:GetService("ReplicatedFirst"):GetDescendants()) do
+		if v:IsA("BasePart") then
+			v.Anchored = false
+		end
+	end
+end)
+
+buttons.Particle.MouseButton1Click:Connect(function()
+	local ID = 1365169976
+	for _, v in pairs(Workspace:GetChildren()) do
+		if v:IsA("Part") then
+			local p = Instance.new("ParticleEmitter")
+			p.Texture = "http://www.roblox.com/asset/?id=" .. ID
+			p.Parent = v
+			p.Rate = 200
+		elseif v:IsA("Model") then
+			for _, z in pairs(v:GetChildren()) do
+				if z:IsA("Part") then
+					local p = Instance.new("ParticleEmitter")
+					p.Texture = "http://www.roblox.com/asset/?id=" .. ID
+					p.Parent = z
+					p.Rate = 200
+				end
+			end
+		end
+	end
+	for _, p in pairs(Players:GetPlayers()) do
+		local char = Workspace:FindFirstChild(p.Name)
+		if char then
+			local head = char:FindFirstChild("Head")
+			if head then
+				local pe = Instance.new("ParticleEmitter")
+				pe.Texture = "rbxassetid://1365169976"
+				pe.Parent = head
+				pe.Rate = 200
+			end
+			local torso = char:FindFirstChild("Torso")
+			if torso then
+				local pe = Instance.new("ParticleEmitter")
+				pe.Texture = "rbxassetid://1365169976"
+				pe.Parent = torso
+				pe.Rate = 200
+			end
+		end
+	end
+end)
+
+buttons.Hint.MouseButton1Click:Connect(function()
+	local h = Instance.new("Hint")
+	h.Parent = Workspace
+	h.Text = "C00lkidd: VELCOME TO MY HACK"
+end)
+
+buttons.Shutdown.MouseButton1Click:Connect(function()
+	local reason = "Team C00lkidd Join Today!"
+	for _, p in pairs(Players:GetPlayers()) do
+		p:Kick(reason)
+	end
+end)
+
+buttons.ClearWorkspace.MouseButton1Click:Connect(function()
+	for _, v in pairs(Workspace:GetChildren()) do
+		if v.Name ~= "Terrain" and v.Name ~= "Camera" then
+			v:Destroy()
+		end
+	end
+end)
+
+buttons.Jumpscare.MouseButton1Click:Connect(function()
+	for _, v in pairs(Players:GetPlayers()) do
+		if v ~= player and v:FindFirstChild("PlayerGui") and not v.PlayerGui:FindFirstChild("Screamer") then
+			task.spawn(function()
+				local newgui = Instance.new("ScreenGui")
+				newgui.Name = "Screamer"
+				newgui.Parent = v.PlayerGui
+				local newimage = Instance.new("ImageLabel")
+				newimage.Image = "http://www.roblox.com/asset/?id=1365169976"
+				newimage.Size = UDim2.new(1, 0, 1, 0)
+				newimage.Parent = newgui
+				local s = Instance.new("Sound")
+				s.SoundId = "rbxassetid://7006487793"
+				s.Volume = 10
+				s.Looped = true
+				s.Parent = newgui
+				s:Play()
+				task.wait(8)
+				newgui:Destroy()
+			end)
+		end
+	end
+end)
+
+buttons.SpamK00pkidd.MouseButton1Click:Connect(function()
+	local ID = 15994885720
+	local function spamDecal(v)
+		if v:IsA("Part") then
+			for i = 0, 5 do
+				local d = Instance.new("Decal")
+				d.Name = "MYDECALHUE"
+				d.Face = i
+				d.Parent = v
+				d.Texture = "http://www.roblox.com/asset/?id=" .. ID
+			end
+		elseif v:IsA("Model") then
+			for _, b in pairs(v:GetChildren()) do
+				spamDecal(b)
+			end
+		end
+	end
+	for _, v in pairs(Workspace:GetChildren()) do
+		spamDecal(v)
+	end
+end)
+
+buttons.K00pkiddMusic.MouseButton1Click:Connect(function()
+	local s = Instance.new("Sound")
+	s.Name = "Sound"
+	s.SoundId = "http://www.roblox.com/asset/?id=1839246711"
+	s.Volume = 1
+	s.Pitch = 0.70
+	s.Looped = true
+	s.Parent = Workspace
+	task.wait(0.1)
+	s:Play()
+end)
+
+buttons.Speed.MouseButton1Click:Connect(function()
+	local char = player.Character
+	if char and char:FindFirstChild("Humanoid") then
+		char.Humanoid.WalkSpeed = char.Humanoid.WalkSpeed * 5
+	end
+end)
+
+buttons.MoonGravity.MouseButton1Down:Connect(function()
+	Workspace.Gravity = 5.787
+end)
+
+buttons.K00pkiddSkybox.MouseButton1Click:Connect(function()
+	local s = Instance.new("Sky")
+	s.Name = "c00lkidd"
+	s.SkyboxBk = "http://www.roblox.com/asset/?id=5994885720"
+	s.SkyboxDn = "http://www.roblox.com/asset/?id=5994885720"
+	s.SkyboxFt = "http://www.roblox.com/asset/?id=5994885720"
+	s.SkyboxLf = "http://www.roblox.com/asset/?id=5994885720"
+	s.SkyboxRt = "http://www.roblox.com/asset/?id=5994885720"
+	s.SkyboxUp = "http://www.roblox.com/asset/?id=5994885720"
+	s.Parent = Lighting
+end)
+
+buttons.R6.MouseButton1Click:Connect(function()
+	local function oof()
+		local objs = game:GetObjects("rbxassetid://1561389244")
+		if #objs > 0 then
+			objs[1].Parent = Workspace.Terrain
+			local c = Workspace.Terrain:FindFirstChildOfClass("Model")
+			if c then
+				c = c:Clone()
+				c.Parent = Workspace
+				if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+					c:MoveTo(player.Character.HumanoidRootPart.Position)
+				end
+				Workspace.Terrain:FindFirstChildOfClass("Model"):Destroy()
+				c.Name = player.Name
+				player.Character = c
+				Workspace.CurrentCamera.CameraSubject = c:FindFirstChildOfClass("Humanoid")
+			end
+		end
+	end
+	oof()
+end)
+
+local keys = { LeftShift = false }
+player:GetMouse().KeyDown:Connect(function(key)
+	if key == "0" then
+		keys.LeftShift = true
+	end
+end)
+player:GetMouse().KeyUp:Connect(function(key)
+	if key == "0" then
+		keys.LeftShift = false
+	end
+end)
+
+local flyHack = false
+flyBtn.MouseButton1Click:Connect(function()
+	flyHack = not flyHack
+	if flyHack then
+		flyBtn.Text = "Fly: on"
+		flyBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+		local humanoid = nil
+		task.spawn(function()
+			while flyHack do
+				local fps = RunService.RenderStepped:Wait()
+				if not humanoid or not humanoid.Parent or not humanoid.Parent.Parent then
+					if player.Character and player.Character:FindFirstChild("Humanoid") then
+						humanoid = player.Character.Humanoid
+						humanoid.PlatformStand = true
+					end
+				else
+					humanoid.PlatformStand = true
+					if humanoid.RootPart then
+						if humanoid.RootPart:FindFirstChild("NoGravity") then
+							humanoid.RootPart.NoGravity.Force = Vector3.new(0, Workspace.Gravity * humanoid.RootPart.AssemblyMass, 0)
+						else
+							local no = Instance.new("BodyForce")
+							no.Name = "NoGravity"
+							no.Force = Vector3.new(0, Workspace.Gravity * humanoid.RootPart.AssemblyMass, 0)
+							no.Parent = humanoid.RootPart
+						end
+						local vel = humanoid.MoveDirection * humanoid.WalkSpeed
+						if humanoid.Jump then
+							vel = vel + Vector3.new(0, humanoid.WalkSpeed, 0)
+						end
+						if keys.LeftShift then
+							vel = vel + Vector3.new(0, -humanoid.WalkSpeed, 0)
+						end
+						humanoid.RootPart.AssemblyLinearVelocity = ((humanoid.RootPart.AssemblyLinearVelocity - vel) * (0.75 ^ (30 / (1 / fps)))) + vel
+					end
+				end
+			end
+		end)
+	else
+		flyBtn.Text = "Fly: off"
+		flyBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+		RunService.RenderStepped:Wait()
+		RunService.RenderStepped:Wait()
+		if player.Character and player.Character:FindFirstChild("Humanoid") then
+			player.Character.Humanoid.PlatformStand = false
+			if player.Character.Humanoid.RootPart and player.Character.Humanoid.RootPart:FindFirstChild("NoGravity") then
+				player.Character.Humanoid.RootPart.NoGravity:Destroy()
+			end
+		end
+	end
+end)
